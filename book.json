@@ -1,5 +1,5 @@
 {
-  "plugins": ["mathjax-full"],
+  "plugins": ["mathjax"],
   "pluginsConfig": {
     "mathjax":{
       "forceSVG": true
