@@ -92,94 +92,45 @@ $$Q_n=\frac{R_1+R_2+\cdots+R_{n-1}}{n-1}$$
 
 당신이 의심 할 수 있듯이, 이것은 정말로 필요하지 않습니다. 각각의 새로운 보상을 처리하는 데 필요한 작고 일정한 계산으로 평균을 업데이트하는 증분 공식을 쉽게 고안 할 수 있습니다. Qn과 n 번째 보상 Rn이 주어지면 모든 n 개의 보상의 새로운 평균은 다음과 같이 계산됩니다.
 
-$$ Q_{n+1} = \frac1n\sum^{n-1}_{i=1}R_i$$
 
-$$ = \frac1n\biggl(R_n + \sum^{n-1}_{i=1}R_i\biggl)$$
+$$\begin{align} 
+Q_{n+1} & = \frac1n\sum^{n-1}_{i=1}R_i\\\\
+& = \frac1n\biggl(R_n + (n-1)\frac1{n-1}\sum^{n-1}_{i=1}R_i\biggl)\\\\
+& = \frac1n\biggl(R_n + (n-1)\frac1{n-1}\sum^{n-1}_{i=1}R_i\biggl)\\\\
+& = \frac1n\biggl(R_n + (n-1)Q_n\biggl)\\\\
+& = \frac1n\biggl(R_n + nQ_n - Q_n\biggl)\\\\
+& = Q_n + \frac1n[R_n - Q_n],\qquad{(2.3)}\\\\
+\end{align}$$
 
-$$ = \frac1n\biggl(R_n + (n-1)\frac1{n-1}\sum^{n-1}_{i=1}R_i\biggl)$$
-
-$$ = \frac1n\biggl(R_n + (n-1)\frac1{n-1}R_i\biggl)$$
-
-$$ = \frac1n\biggl(R_n + (n-1)\frac1{n-1}\sum^{n-1}_{i=1}R_i\biggl) \qquad{(2.3)}$$
 
 n = 1 인 경우에도 유지되며 임의의 Q1에 대해 Q2 = R1을 얻습니다. 이 구현에는 Qn과 n에 대해서만 메모리가 필요하고 각각의 새로운 보상에는 작은 계산 (2.3) 만 필요합니다. 점진적으로 계산 된 표본 평균과 ε- 탐욕적인 행동 선택을 사용하는 완전한 적기 알고리즘에 대한 의사 코드는 아래와 같습니다. 함수 bandit \(a\)는 행동을 취하여 상응하는 보상을 반환합니다고 가정합니다.
 
 
 --
-```Initialize, for a = 1 to k:
-  Q(a) ← 0  N(a) ← 0Repeat forever:  A ← argmax_a Q(a)  a random action  with probability 1 − ε with probability ε  (breaking ties randomly)  R ← bandit(A)
-```
+간단한 bandit 문제 알고리즘
+
+$\begin{align} 
+&Initialize,\ for\ a\ =\ 1\ to\ k:\\
+&\ \ Q(a) ← 0\\&\ \ N(a) ← 0 \\&Repeat\ forever:\\&\ \ A ← argmax_a Q(a)\\
+&\ \ R ← bandit(A)\\
+\end{align}$  
 --
 
 
 업데이트 규칙 \(2.3\)은이 책 전체에서 자주 발생하는 형태입니다.
 
     
-
-
 일반적인 양식은
 
-    
-
-
-NewEstimate ← OldEstimate + StepSize Target - OldEstimate입니다. \(2.4\)
+$$NewEstimate ← OldEstimate + StepSize[Target - OldEstimate]\qquad{(2.4)}$$
 
     
 
 
-Target - OldEstimate 표현은 추정의 오류입니다. 그것은 
-
-"
-
-목표물
-
-"
-
-을 향한 한 걸음을 내딛음으로써 감소됩니다. 목표물은 시끄 럽긴하지만 움직이기위한 바람직한 방향을 나타내는 것으로 추정됩니다. 예를 들어, 위의 경우 대상은 n 번째 보상입니다.
-
-    
+[Target - OldEstimate] 표현은 추정의 오류입니다. 그것은 "목표물"을 향한 한 걸음을 내딛음으로써 감소됩니다. 목표물은 시끄 럽긴하지만 움직이기위한 바람직한 방향을 나타내는 것으로 추정됩니다. 예를 들어, 위의 경우 대상은 n 번째 보상입니다.
 
 
-←
-
-    
-
-
-R ← 적기 \(A\)
-
-    
-
-
-N \(A\) ← N \(A\) + 1
-
-    
-
-
-    
-
-
-Q \(A\) ← Q \(A\) + 1 N \(A\)
-
-    
-
-
-    
-
-
-2 MULTI-ARM 도둑 34 CHAPTER
-
-    
-
-
-참고 스텝 크기 파라미터 \( StepSize\)
-
-    
-
-
-는 시간 단계에서 시간 단계로 변경됩니다.
-
-    
-
+참고 스텝 크기 파라미터 \( StepSize\)는 시간 단계에서 시간 단계로 변경됩니다.
 
 액션 a에 대한 n 번째 보상 을 처리 할 때,이 메소드는 1의 스텝 크기 매개 변수를 사용합니다. 이 책에서 우리는 n
 
