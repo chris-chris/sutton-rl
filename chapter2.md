@@ -92,11 +92,9 @@ $$Q_n=\frac{R_1+R_2+\cdots+R_{n-1}}{n-1}$$
 
 당신이 의심 할 수 있듯이, 이것은 정말로 필요하지 않습니다. 각각의 새로운 보상을 처리하는 데 필요한 작고 일정한 계산으로 평균을 업데이트하는 증분 공식을 쉽게 고안 할 수 있습니다. Qn과 n 번째 보상 Rn이 주어지면 모든 n 개의 보상의 새로운 평균은 다음과 같이 계산됩니다.
 
-$$
-Q_{n+1} = \frac1n\sum^{n-1}_{i=1}R_i$$
+$$ Q_{n+1} = \frac1n\sum^{n-1}_{i=1}R_i$$
 
-$$
-= \frac1n\biggl(R_n + \sum^{n-1}_{i=1}R_i\biggl)$$
+$$ = \frac1n\biggl(R_n + \sum^{n-1}_{i=1}R_i\biggl)$$
 
 $$ = \frac1n\biggl(R_n + (n-1)\frac1{n-1}\sum^{n-1}_{i=1}R_i\biggl)$$
 
@@ -104,61 +102,14 @@ $$ = \frac1n\biggl(R_n + (n-1)\frac1{n-1}R_i\biggl)$$
 
 $$ = \frac1n\biggl(R_n + (n-1)\frac1{n-1}\sum^{n-1}_{i=1}R_i\biggl) \qquad{(2.3)}$$
 
-$$\qquad{(2.3)}$$
-
 n = 1 인 경우에도 유지되며 임의의 Q1에 대해 Q2 = R1을 얻습니다. 이 구현에는 Qn과 n에 대해서만 메모리가 필요하고 각각의 새로운 보상에는 작은 계산 (2.3) 만 필요합니다. 점진적으로 계산 된 표본 평균과 ε- 탐욕적인 행동 선택을 사용하는 완전한 적기 알고리즘에 대한 의사 코드는 아래와 같습니다. 함수 bandit \(a\)는 행동을 취하여 상응하는 보상을 반환합니다고 가정합니다.
 
-    
 
-
-N
-
-    
-
-
-간단한 적기 알고리즘
-
-    
-
-
-초기화 A = 1 K에 대한 : Q \(a\) ← 0
-
-    
-
-
-N \(a\) ← 0
-
-    
-
-
-반복 F의 orever :
-
-    
-
-
-ARG MAXA Q \(a\)
-
-    
-
-
-임의의 액션
-
-    
-
-
-확률 1 - ε 확률 ε와
-
-    
-
-
-\(속보 관계 무작위로\)
-
-    
-
-
-R - Q \(A\)
-
-    
+--
+```Initialize, for a = 1 to k:
+  Q(a) ← 0  N(a) ← 0Repeat forever:  A ← argmax_a Q(a)  a random action  with probability 1 − ε with probability ε  (breaking ties randomly)  R ← bandit(A)
+```
+--
 
 
 업데이트 규칙 \(2.3\)은이 책 전체에서 자주 발생하는 형태입니다.
